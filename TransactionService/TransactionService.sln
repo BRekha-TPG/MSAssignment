@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionService", "TransactionService.csproj", "{583CCB7F-D8A3-4134-AC7D-27F3EDB40D24}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "..\NotificationService\NotificationService.csproj", "{2C368B80-79BF-4053-9B1B-98E91E569C1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{583CCB7F-D8A3-4134-AC7D-27F3EDB40D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{583CCB7F-D8A3-4134-AC7D-27F3EDB40D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{583CCB7F-D8A3-4134-AC7D-27F3EDB40D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C368B80-79BF-4053-9B1B-98E91E569C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C368B80-79BF-4053-9B1B-98E91E569C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C368B80-79BF-4053-9B1B-98E91E569C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C368B80-79BF-4053-9B1B-98E91E569C1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
