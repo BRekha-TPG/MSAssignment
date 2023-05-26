@@ -1,9 +1,14 @@
+using MassTransit;
+using MassTransit.Transports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+using NotificationContracts.DataContracts;
 using Product.API.Data;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
+using System.Security.Principal;
 using TransactionService.Model;
 using TransactionService.Service;
 
@@ -13,29 +18,27 @@ namespace TransactionService.Controllers
     [Route("[controller]")]
     public class TransactionController : ControllerBase
     {
-    //    private static readonly string[] Summaries = new[]
-    //    {
-    //    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    //};
-
+   
         private readonly ILogger<TransactionController> _logger;
 
         private readonly ITransactonServices _context;
+        public readonly IPublishEndpoint _publishEndpoint;
 
         AccountDbContext _accountDbContext;
 
-        public TransactionController(ILogger<TransactionController> logger, ITransactonServices context, AccountDbContext accountDbContext)
+        public TransactionController(ILogger<TransactionController> logger, ITransactonServices context, AccountDbContext accountDbContext, IPublishEndpoint publishEndpoint)
         {
             _logger = logger;
             _context = context;
             _accountDbContext = accountDbContext;
+            _publishEndpoint = publishEndpoint;
         }
 
         [Route("CheckBalance")]
         [HttpGet]
-        public async Task<AccountInformation> CheckBalance(Guid id)
+        public async Task<AccountInformation> CheckBalance(string AccountNumber)
         {
-            return await _context.CheckBalance(id);
+            return await _context.CheckBalance(AccountNumber);
         }
 
         [Route("GetAllAcountInfo")]
@@ -51,6 +54,12 @@ namespace TransactionService.Controllers
         public async Task<AccountInformation> Deposite(string account, decimal amount)
         {
             var accountInformation = await _context.Deposite(account, amount);
+            await _publishEndpoint.Publish<IAccountTransaction>(new AccountTransaction()
+            {
+                FromAccount = account,
+                TransactionType = TransactionType.Deposite.ToString(),
+                CurrentBalance = accountInformation.CurrentBalance
+            });
             return accountInformation;
         }
 
@@ -59,6 +68,13 @@ namespace TransactionService.Controllers
         public async Task<AccountInformation> Withdraw(string account, decimal amount)
         {
             var accountInformation = await _context.Withdraw(account, amount);
+
+            await _publishEndpoint.Publish<IAccountTransaction>(new AccountTransaction()
+            {
+                FromAccount = account,
+                TransactionType = TransactionType.Withraw.ToString(),
+                CurrentBalance = accountInformation.CurrentBalance
+            });
             return accountInformation;
         }
 
@@ -67,6 +83,13 @@ namespace TransactionService.Controllers
         public async Task<IEnumerable<AccountInformation>> FundTransfer(string SourceAcc, string desAcc, decimal amount)
         {
             var accountInformation = await _context.FundTransfer(SourceAcc, desAcc, amount);
+            await _publishEndpoint.Publish<IAccountTransaction>(new AccountTransaction()
+            {
+                FromAccount = SourceAcc,
+                ToAccount = desAcc,
+                TransactionType = TransactionType.Transfer.ToString()
+               // CurrentBalance = accountInformation
+            });
             return accountInformation;
         }
 

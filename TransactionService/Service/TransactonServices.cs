@@ -10,23 +10,25 @@ namespace TransactionService.Service
 {
     public class TransactonServices : ITransactonServices
     {
-        string ConnectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=TransactionDB;Integrated Security=SSPI;Encrypt=false";
+       // string ConnectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=TransactionDB;Integrated Security=SSPI;Encrypt=false";
         private readonly AccountDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public TransactonServices(AccountDbContext context)
+        public TransactonServices(AccountDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration; 
         }
-        public async Task<AccountInformation> CheckBalance(Guid id)
+        public async Task<AccountInformation> CheckBalance(string AccountNumber)
         {
-            AccountInformation accountInformation = await _context.accountInformation.Where(x => x.Id == id).FirstOrDefaultAsync();
+            AccountInformation accountInformation = await _context.accountInformation.Where(x => x.AccountNo == AccountNumber).FirstOrDefaultAsync();
             return accountInformation;
         }
 
         public async Task<AccountInformation> Deposite(string account, decimal amount)
         {
 
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_configuration.GetValue<string>("ConnectionStrings:ProductConnection").ToString()))
             {
                 //Create the Command Object
                 SqlCommand cmd = new SqlCommand()
@@ -56,7 +58,7 @@ namespace TransactionService.Service
 
         public async Task<AccountInformation> Withdraw(string account, decimal amount)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_configuration.GetValue<string>("ConnectionStrings:ProductConnection").ToString()))
             {
                 //Create the Command Object
                 SqlCommand cmd = new SqlCommand()
@@ -80,7 +82,7 @@ namespace TransactionService.Service
 
         public async Task<IEnumerable<AccountInformation>> FundTransfer(string SourceAcc, string desAcc, decimal amount)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_configuration.GetValue<string>("ConnectionStrings:ProductConnection").ToString()))
             {
                 //Create the Command Object
                 SqlCommand cmd = new SqlCommand()

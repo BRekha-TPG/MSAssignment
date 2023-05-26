@@ -9,7 +9,7 @@ namespace TransactionService.Model
         public AccountInformation() { }
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string AccountNo { get; set; }
         public string Name { get; set; }

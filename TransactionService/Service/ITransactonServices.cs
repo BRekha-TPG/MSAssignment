@@ -6,7 +6,7 @@ namespace TransactionService.Service
     public interface ITransactonServices
     {
         Task<IEnumerable<AccountInformation>> GetAllAccountInfo();
-        Task<AccountInformation> CheckBalance(Guid id);
+        Task<AccountInformation> CheckBalance(string AccountNumber);
         Task<AccountInformation> Deposite(string account, decimal amount);
 
         Task<AccountInformation> Withdraw(string account, decimal amount);
