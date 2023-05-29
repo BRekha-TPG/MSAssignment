@@ -20,7 +20,7 @@ namespace NotificationService.Consumers
         public async Task Consume(ConsumeContext<IActivateCustomer> context)
         {
             _logger.LogInformation($"Customer Activated Id : {context.Message.CustomerId}");
-            _logger.LogInformation($"Customer Activated Name :  {context.Message.CustomerName}");
+            //_logger.LogInformation($"Customer Activated Name :  {context.Message.CustomerName}");
         }
     }
 }

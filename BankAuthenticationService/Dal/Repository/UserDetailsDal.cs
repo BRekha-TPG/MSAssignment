@@ -56,6 +56,7 @@ namespace BankAuthenticationService.Dal.Repository
                     cmd.Parameters.Add(new SqlParameter("@userRole", userDetails.UserRole));
                     cmd.Parameters.Add(new SqlParameter("@accountNumber", userDetails.AccountNumber));
                     cmd.Parameters.Add(new SqlParameter("@mobileNumber", userDetails.MobileNumber));
+                    cmd.Parameters.Add(new SqlParameter("@isActive", userDetails.IsActive));
 
                     var registered = cmd.ExecuteNonQuery();
                     if (registered > 0)

@@ -1,10 +1,14 @@
 ﻿using BankAuthenticationService.Bll;
 using BankAuthenticationService.Model;
 using Identity.WebApi.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NotificationContracts.DataContracts;
 using System.Security.Claims;
+using TransactionService.Controllers;
+using TransactionService.Model;
 
 namespace BankAuthenticationService.Controllers
 {
@@ -15,10 +19,15 @@ namespace BankAuthenticationService.Controllers
         private IUserService _userService;
         private IUserDetailsBll _userDetailsBll;
 
-        public AuthenticateController(IUserService userService, IUserDetailsBll userDetailsBll)
+        private readonly ILogger<TransactionController> _logger;
+        public readonly IPublishEndpoint _publishEndpoint;
+
+        public AuthenticateController(IUserService userService, IUserDetailsBll userDetailsBll, IPublishEndpoint publishEndpoint, ILogger<TransactionController> logger)
         {
             _userService = userService;
             _userDetailsBll = userDetailsBll;
+            _publishEndpoint = publishEndpoint;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -44,6 +53,11 @@ namespace BankAuthenticationService.Controllers
             if (userRegistered == null)
                 return BadRequest(new { message = "Registreation Failed" });
 
+            await _publishEndpoint.Publish<INewCustomer>(new NewCustomer()
+            {
+                CustomerId = Convert.ToInt32(user.UserId),
+                CustomerName = user.UserName,
+            });
             return Ok("User Registered Succesfully :" + userRegistered.UserName);
         }
 
@@ -57,6 +71,11 @@ namespace BankAuthenticationService.Controllers
             if (!userActivated)
                 return BadRequest(new { message = "Failed to Activate user." });
 
+            await _publishEndpoint.Publish<IActivateCustomer>(new ActivateCustomer()
+            {
+                CustomerId = Convert.ToInt32(userId),
+                IsActive = userActivated,
+            });
             return Ok("User Registered Succesfully :" + userId);
         }
     }

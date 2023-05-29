@@ -7,6 +7,7 @@ using BankAuthenticationService.Dal.Repository;
 using BankAuthenticationService.Model;
 using Identity.WebApi.Services;
 using MassTransit;
+using MassTransit.Transports;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -65,7 +66,24 @@ namespace BankAuthenticationService
                         {securityScheme, new string[] {} }
                     });
                 });
+                builder.Services.AddMassTransit(config =>
+                {
+                    config.SetKebabCaseEndpointNameFormatter();
 
+                    //config.AddConsumer<NewCustomerConsumer>();
+                    //config.AddConsumer<ActivateCustomerConsumer>();
+                    //config.AddConsumer<AccountTransactionConsumer>();
+
+                    config.UsingRabbitMq((ctx, cfg) =>
+                    {
+                        cfg.ConfigureEndpoints(ctx);
+                        cfg.Host("localhost", hostConfigurator => { });
+                    });
+
+                    config.AddConsumers(Assembly.GetExecutingAssembly());
+
+
+                });
                 var app = builder.Build();
                 app.UseAuthentication();
                 app.UseSwagger();
