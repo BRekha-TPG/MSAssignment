@@ -39,7 +39,7 @@ namespace TransactionService.Controllers
 
         [Route("CheckBalance")]
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<AccountInformation> CheckBalance(string AccountNumber)
         {
             return await _context.CheckBalance(AccountNumber);
@@ -56,7 +56,7 @@ namespace TransactionService.Controllers
 
         [Route("Deposite")]
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<AccountInformation> Deposite(string account, decimal amount)
         {
             var accountInformation = await _context.Deposite(account, amount);
@@ -71,7 +71,7 @@ namespace TransactionService.Controllers
 
         [Route("Withdraw")]
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<AccountInformation> Withdraw(string account, decimal amount)
         {
             var accountInformation = await _context.Withdraw(account, amount);
@@ -87,7 +87,7 @@ namespace TransactionService.Controllers
 
         [Route("FundTransfer")]
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IEnumerable<AccountInformation>> FundTransfer(string SourceAcc, string desAcc, decimal amount)
         {
             var accountInformation = await _context.FundTransfer(SourceAcc, desAcc, amount);
