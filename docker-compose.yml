@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+
+  bankauthenticationservice:
+    image: ${DOCKER_REGISTRY-}bankauthenticationservice
+    build:
+      context: .
+      dockerfile: BankAuthenticationService/Dockerfile
+
+  transactionservice:
+    image: ${DOCKER_REGISTRY-}transactionservice
+    build:
+      context: .
+      dockerfile: TransactionService/Dockerfile
+
+  notificationservice:
+    image: ${DOCKER_REGISTRY-}notificationservice
+    build:
+      context: .
+      dockerfile: NotificationService/Dockerfile
+
+  
+
+  
+
