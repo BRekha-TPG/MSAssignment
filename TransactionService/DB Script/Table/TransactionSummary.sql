@@ -1,7 +1,7 @@
-﻿USE [TransactionDB]
+USE [TransactionDB]
 GO
 
-/****** Object:  Table [dbo].[TransactionSummary]    Script Date: 05-24-2023 17:29:55 ******/
+/****** Object:  Table [dbo].[TransactionSummary]    Script Date: 05-25-2023 18:21:43 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[TransactionSummary](
-	[AccountId] [uniqueidentifier] NOT NULL,
+	[AccountId] [int] IDENTITY NOT NULL,
 	[FromAccount] [varchar](50) NULL,
 	[ToAccount] [varchar](50) NULL,
 	[TransactionType] [varchar](50) NOT NULL,
@@ -22,11 +22,11 @@ CREATE TABLE [dbo].[TransactionSummary](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[TransactionSummary]  WITH CHECK ADD  CONSTRAINT [FK_TransactionSummary_AccountInformation] FOREIGN KEY([AccountId])
+ALTER TABLE [dbo].[TransactionSummary]  WITH CHECK ADD  CONSTRAINT [FK_TransactionSummary_AccountInformation1] FOREIGN KEY([AccountId])
 REFERENCES [dbo].[AccountInformation] ([Id])
 GO
 
-ALTER TABLE [dbo].[TransactionSummary] CHECK CONSTRAINT [FK_TransactionSummary_AccountInformation]
+ALTER TABLE [dbo].[TransactionSummary] CHECK CONSTRAINT [FK_TransactionSummary_AccountInformation1]
 GO
 
 

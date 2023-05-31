@@ -1,7 +1,7 @@
-﻿USE [TransactionDB]
+USE [TransactionDB]
 GO
 
-/****** Object:  Table [dbo].[AccountInformation]    Script Date: 05-24-2023 17:26:37 ******/
+/****** Object:  Table [dbo].[AccountInformation]    Script Date: 05-25-2023 18:20:52 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,10 +9,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[AccountInformation](
-	[Id] [uniqueidentifier] NOT NULL,
+	[Id] [int] IDENTITY NOT NULL,
 	[AccountNo] [varchar](50) NOT NULL,
 	[Address] [varchar](50) NULL,
-	[CurrentBalance] [decimal](18, 0) NOT NULL,
+	[CurrentBalance] [decimal](18, 0) NULL,
 	[Name] [varchar](50) NULL,
  CONSTRAINT [PK_AccountInformation] PRIMARY KEY CLUSTERED 
 (
