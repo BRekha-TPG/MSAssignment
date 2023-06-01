@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Product.API.Data;
 using System.Data;
 using System.Linq;
+using NotificationContracts.DataContracts;
 using TransactionService.Model;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -102,6 +103,29 @@ namespace TransactionService.Service
                 var accountInfo = await _context.accountInformation.ToListAsync();
                 return accountInfo;
 
+            }
+        }
+
+        public async Task<AccountInformation> CreateNewCustomer(INewCustomerT newCustomer)
+        {
+            using (SqlConnection connnection = new SqlConnection(_configuration.GetValue<string>("ConnectionStrings:ProductConnection")))
+            {
+                SqlCommand cmd = new SqlCommand()
+                {
+                    CommandText = "CreateNewCustomer",
+                    Connection = connnection,
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@AccountNumber", newCustomer.Accountnumber);
+                cmd.Parameters.AddWithValue("@Name", newCustomer.CustomerName);
+                cmd.Parameters.AddWithValue("@balance", Convert.ToDecimal(newCustomer.Balance));
+                cmd.Parameters.AddWithValue("@Address", newCustomer.Address);
+
+                connnection.Open();
+                cmd.ExecuteNonQuery();
+                var accountInfo = await _context.accountInformation.Where(x => x.AccountNo == newCustomer.Accountnumber).FirstOrDefaultAsync();
+                return accountInfo;
             }
         }
     }

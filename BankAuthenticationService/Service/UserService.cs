@@ -46,7 +46,7 @@ namespace Identity.WebApi.Services
                 {
                     new Claim("AccountNumber", user.AccountNumber.ToString()),
                     new Claim(ClaimTypes.Role, user.UserRole.ToString()),
-                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Name, user.Name),
                     new Claim("UserId", user.UserId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(5),

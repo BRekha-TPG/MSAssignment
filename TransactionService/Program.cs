@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Product.API.Data;
 using System.Text;
 using System.Reflection;
+using TransactionService.Consumer;
 using TransactionService.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,7 +62,7 @@ builder.Services.AddMassTransit(config =>
 {
     config.SetKebabCaseEndpointNameFormatter();
 
-    //config.AddConsumer<NewCustomerConsumer>();
+    config.AddConsumer<NewCustomerConsumerT>();
     //config.AddConsumer<ActivateCustomerConsumer>();
     //config.AddConsumer<AccountTransactionConsumer>();
 

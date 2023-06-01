@@ -50,7 +50,7 @@ namespace BankAuthenticationService.Dal.Repository
                     SqlCommand cmd = new SqlCommand("CreateUser", con);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@userId", userDetails.UserId));
-                    cmd.Parameters.Add(new SqlParameter("@userName", userDetails.UserName));
+                    cmd.Parameters.Add(new SqlParameter("@userName", userDetails.Name));
                     cmd.Parameters.Add(new SqlParameter("@password", userDetails.Password));
                     cmd.Parameters.Add(new SqlParameter("@email", userDetails.Email));
                     cmd.Parameters.Add(new SqlParameter("@userRole", userDetails.UserRole));
@@ -63,7 +63,7 @@ namespace BankAuthenticationService.Dal.Repository
                     {
                         user = new User()
                         {
-                            UserName = userDetails.UserName,
+                            Name = userDetails.Name,
                             AccountNumber = userDetails.AccountNumber
                         };
                     }
@@ -94,7 +94,7 @@ namespace BankAuthenticationService.Dal.Repository
                     {
                         user = new User
                         {
-                            UserName = dr["UserName"].ToString(),
+                            Name = dr["UserName"].ToString(),
                             UserId = dr["UserId"].ToString(),
                             AccountNumber = Convert.ToInt64(dr["AccountNumber"]),
                             UserRole = (UserRole)Enum.ToObject(typeof(UserRole), dr["UserRole"]),
