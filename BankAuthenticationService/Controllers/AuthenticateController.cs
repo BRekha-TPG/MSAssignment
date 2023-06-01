@@ -34,7 +34,7 @@ namespace BankAuthenticationService.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] Login login)
         {
-            var authResult = await _userService.Authenticate(login.UserName, login.Password);
+            var authResult = await _userService.Authenticate(login.UserId, login.Password);
 
             if(!authResult.IsActive)
                 return BadRequest(new { message = "User is not active. Contatact Bank Administrator" });
@@ -56,15 +56,15 @@ namespace BankAuthenticationService.Controllers
             await _publishEndpoint.Publish<INewCustomerT>(new NewCustomerT()
             {
                 Accountnumber = userRegistered.AccountNumber.ToString(),
-                CustomerName = userRegistered.UserName,
+                CustomerName = userRegistered.Name,
                 Address = "Noida"
             });
             await _publishEndpoint.Publish<INewCustomer>(new NewCustomer()
             {
                 CustomerId = Convert.ToInt32(user.UserId),
-                CustomerName = user.UserName,
+                CustomerName = user.Name,
             });
-            return Ok("User Registered Succesfully :" + userRegistered.UserName);
+            return Ok("User Registered Succesfully :" + userRegistered.Name);
         }
 
         [HttpPut]
