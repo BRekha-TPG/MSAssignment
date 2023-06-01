@@ -23,9 +23,9 @@ namespace MM.MS.EcrProxyListener
              {
                  logger.MinimumLevel.Debug().Enrich.FromLogContext();
                  if (context.HostingEnvironment.IsDevelopment())
-                     logger.WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} {CorrelationId} {Level:u3} {Message}{NewLine}{Exception}");
+                     logger.WriteTo.File("../../../../log.txt");
                  else
-                     logger.WriteTo.Console(new JsonFormatter());
+                     logger.WriteTo.File(new JsonFormatter(), "../../../../log.txt");
 
              })
                 .ConfigureServices((hostContext, services) =>
