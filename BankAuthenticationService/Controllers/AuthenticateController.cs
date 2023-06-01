@@ -82,7 +82,7 @@ namespace BankAuthenticationService.Controllers
                 CustomerId = Convert.ToInt32(userId),
                 IsActive = userActivated,
             });
-            return Ok("User Registered Succesfully :" + userId);
+            return Ok("User Activated Succesfully :" + userId);
         }
     }
 }
