@@ -36,17 +36,17 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<AccountDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ProductConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => 
+builder.Services.AddSwaggerGen(options =>
 {
-   var securityScheme =  new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    var securityScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Description = "Authorization Header",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Name= "Authorization",
+        Name = "Authorization",
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
         Scheme = "bearer",
         BearerFormat = "JWT",
-        Reference = new Microsoft.OpenApi.Models.OpenApiReference() { Id = JwtBearerDefaults.AuthenticationScheme, Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme}
+        Reference = new Microsoft.OpenApi.Models.OpenApiReference() { Id = JwtBearerDefaults.AuthenticationScheme, Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme }
 
     };
     options.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
@@ -78,11 +78,17 @@ builder.Services.AddMassTransit(config =>
 var app = builder.Build();
 app.UseAuthentication();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwaggerUI();
+    //    options =>
+    //{
+    //    options.SwaggerEndpoint("/swagger/v1/swagger1.json", "v1");
+    //    options.RoutePrefix = string.Empty;
+    //}
+//        );
+//}
 
 app.UseHttpsRedirection();
 

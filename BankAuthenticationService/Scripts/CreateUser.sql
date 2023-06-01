@@ -14,8 +14,8 @@ CREATE PROCEDURE CreateUser
 AS
 	INSERT INTO [User](
 		[UserId],
-		[Password],
 		[UserName],
+		[Password],
 		[Email],
 		[UserRole],
 		[AccountNumber],

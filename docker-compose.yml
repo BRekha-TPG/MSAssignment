@@ -2,23 +2,49 @@ version: '3.4'
 
 services:
 
+  sqldb:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    #container_name: sql_server2019
+    environment:
+        - SA_PASSWORD=2Secure*Password2
+        - ACCEPT_EULA=Y
+    ports:
+        - "1440:1433"
+
   bankauthenticationservice:
     image: ${DOCKER_REGISTRY-}bankauthenticationservice
     build:
       context: .
       dockerfile: BankAuthenticationService/Dockerfile
+    ports:
+        - "1660:1660"
 
   transactionservice:
     image: ${DOCKER_REGISTRY-}transactionservice
     build:
       context: .
       dockerfile: TransactionService/Dockerfile
+    ports:
+       - "1690:1690"
 
   notificationservice:
     image: ${DOCKER_REGISTRY-}notificationservice
     build:
       context: .
       dockerfile: NotificationService/Dockerfile
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: "rabbitmq"
+    labels:
+      NAME: "rabbitmq"
+    ports:
+    - '4369:4369'
+    - '5671:5671'
+    - '5672:5672'
+    - '25672:25672'
+    - '15671:15671'
+    - '15672:15672'
 
   
 
