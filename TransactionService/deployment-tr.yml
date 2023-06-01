@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: transactionservice
+    app: transactionservice
+  name: transactionservice-pod
+spec:
+  replicas: 2
+  selector:
+   matchLabels:
+     app.kubernetes.io/name: transactionservice
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: transactionservice
+        app: transactionservice
+    spec:
+      containers:
+      - image: transactionservice
+        name: transactionservice
+        imagePullPolicy: Never
+        ports:   
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app:  depl-tr
+  name:  depl-tr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  depl-tr
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app:  depl-tr
+    spec:
+      containers:
+      - image:  transactionservice
+        name:  transactionservice
+        resources: {}
+        imagePullPolicy: Never
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: transactionservice
+    labels:
+      name: transactionservice
+spec:
+    type: NodePort
+    ports:
+      - port: 80
+        nodePort: 30087
+        name: http
+      - port: 443
+        nodePort: 30445
+        name: https
+    selector:
+      app: transactionservice-pod

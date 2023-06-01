@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: transactionservice-pod
+  labels:
+    name: transactionservice-pod
+spec:
+    hostNetwork: true
+    #volumes:
+    #- name: transactionservice-pv-storage
+    #  persistentVolumeClaim:
+    #    claimName: transactionservice-pv-claim
+    containers:
+    - name: transactionservice-container
+      image: transactionservice
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 8000
+          hostPort: 8000
+          name: "http-server"
+      #volumeMounts:
+      #  - mountPath: "/Logs/"
+      #    name: task-pv-storage
