@@ -53,6 +53,12 @@ namespace BankAuthenticationService.Controllers
             if (userRegistered == null)
                 return BadRequest(new { message = "Registreation Failed" });
 
+            await _publishEndpoint.Publish<INewCustomerT>(new NewCustomerT()
+            {
+                Accountnumber = userRegistered.AccountNumber.ToString(),
+                CustomerName = userRegistered.UserName,
+                Address = "Noida"
+            });
             await _publishEndpoint.Publish<INewCustomer>(new NewCustomer()
             {
                 CustomerId = Convert.ToInt32(user.UserId),

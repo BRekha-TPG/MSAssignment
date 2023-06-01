@@ -1,4 +1,5 @@
-﻿using TransactionService.Model;
+﻿using NotificationContracts.DataContracts;
+using TransactionService.Model;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TransactionService.Service
@@ -12,5 +13,6 @@ namespace TransactionService.Service
         Task<AccountInformation> Withdraw(string account, decimal amount);
 
         Task<IEnumerable<AccountInformation>> FundTransfer(string SourceAcc, string desAcc, decimal amount);
+        Task<AccountInformation> CreateNewCustomer(INewCustomerT newCustomer);
     }
 }
